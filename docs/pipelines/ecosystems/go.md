@@ -138,8 +138,8 @@ steps:
     shopt -s extglob
     shopt -s dotglob
     mv !(gopath) '$(modulePath)'
-    echo '##vso[task.prependpath]$(GOBIN)'
-    echo '##vso[task.prependpath]$(GOROOT)/bin'
+    Write-Output '##vso[task.prependpath]$(GOBIN)'
+    Write-Output '##vso[task.prependpath]$(GOROOT)/bin'
   displayName: 'Set up the Go workspace'
 
 - script: |

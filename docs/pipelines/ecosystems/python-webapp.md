@@ -359,7 +359,7 @@ As part of your build process, you may want to run tests on your app code. Tests
   displayName: 'Run tests'
 
 - script: |
-    echo Deleting .env
+    Write-Output Deleting .env
     deactivate
     rm -rf .env
   displayName: 'Remove .env before zip'

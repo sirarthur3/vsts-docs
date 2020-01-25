@@ -219,7 +219,7 @@ variables:
 steps:
 - bash: |
     sudo apt-get install ccache -y    
-    echo "##vso[task.prependpath]/usr/lib/ccache"
+    Write-Output "##vso[task.prependpath]/usr/lib/ccache"
   displayName: Install ccache and update PATH to use linked versions of gcc, cc, etc
 
 - task: Cache@2

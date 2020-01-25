@@ -229,7 +229,7 @@ The `script:` step runs an inline script using Bash on Linux and macOS and Comma
 ```yaml
 steps:
 - script: |
-    echo Starting the build
+    Write-Output Starting the build
     mvn package
   displayName: 'Build with Maven'
 ```

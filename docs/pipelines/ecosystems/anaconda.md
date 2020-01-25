@@ -56,14 +56,14 @@ On hosted agents, conda is left out of `PATH` by default to keep its Python vers
 # [Hosted Ubuntu 16.04](#tab/ubuntu-16-04)
 
 ```yaml
-- bash: echo "##vso[task.prependpath]$CONDA/bin"
+- bash: Write-Output "##vso[task.prependpath]$CONDA/bin"
   displayName: Add conda to PATH
 ```
 
 # [Hosted macOS](#tab/macos)
 
 ```yaml
-- bash: echo "##vso[task.prependpath]$CONDA/bin"
+- bash: Write-Output "##vso[task.prependpath]$CONDA/bin"
   displayName: Add conda to PATH
 
 # On Hosted macOS, the agent user doesn't have ownership of Miniconda's installation directory/

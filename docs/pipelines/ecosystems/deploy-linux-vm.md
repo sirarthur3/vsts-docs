@@ -206,7 +206,7 @@ For more guidance, follow the steps mentioned in [Build your Node.js app with gu
        runOnce:
          deploy:
            steps:
-           - script: echo my first deployment
+           - script: Write-Output my first deployment
    ```
 
 4. Below is an example of the YAML snippet that you can use to define a rolling strategy for Virtual machines updates upto 5 targets in each iteration. `maxParallel` will determine the number of targets that can be deployed to, in parallel. The selection accounts for absolute number or percentage of targets that must remain available at any time excluding the targets that are being deployed to. It is also used to determine the success and failure conditions during deployment.
@@ -225,7 +225,7 @@ For more guidance, follow the steps mentioned in [Build your Node.js app with gu
               steps:
               - download: current
                 artifact: drop
-              - script: echo initialize, cleanup, backup, install certs
+              - script: Write-Output initialize, cleanup, backup, install certs
             deploy:
               steps:
               - task: Bash@3
@@ -233,21 +233,21 @@ For more guidance, follow the steps mentioned in [Build your Node.js app with gu
                   targetType: 'inline'
                   script: |
                     # Modify deployment script based on the app type
-                    echo "Starting deployment script run"
+                    Write-Output "Starting deployment script run"
                     sudo java -jar '$(Pipeline.Workspace)/drop/**/target/*.jar'
             routeTraffic:
               steps:
-              - script: echo routing traffic
+              - script: Write-Output routing traffic
             postRouteTraffic:
               steps:
-              - script: echo health check post-route traffic
+              - script: Write-Output health check post-route traffic
             on:
               failure:
                 steps:
-                - script: echo Restore from backup! This is on failure
+                - script: Write-Output Restore from backup! This is on failure
               success:
                 steps:
-                - script: echo Notify! This is on success
+                - script: Write-Output Notify! This is on success
     ```
     With each run of this job, deployment history is recorded against the `<environment name>` environment that you have created and registered the VMs.
 
