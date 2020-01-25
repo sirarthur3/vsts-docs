@@ -215,7 +215,7 @@ Next, we'll create the Dockerfile.
     # To make it easier for build and release pipelines to run apt-get,
     # configure apt to not require confirmation (assume the -y argument by default)
     ENV DEBIAN_FRONTEND=noninteractive
-    RUN echo "APT::Get::Assume-Yes \"true\";" > /etc/apt/apt.conf.d/90assumeyes
+    RUN Write-Output "APT::Get::Assume-Yes \"true\";" > /etc/apt/apt.conf.d/90assumeyes
 
     RUN apt-get update \
     && apt-get install -y --no-install-recommends \
@@ -249,18 +249,18 @@ Next, we'll create the Dockerfile.
     set -e
 
     if [ -z "$AZP_URL" ]; then
-      echo 1>&2 "error: missing AZP_URL environment variable"
+      Write-Output 1>&2 "error: missing AZP_URL environment variable"
       exit 1
     fi
 
     if [ -z "$AZP_TOKEN_FILE" ]; then
       if [ -z "$AZP_TOKEN" ]; then
-        echo 1>&2 "error: missing AZP_TOKEN environment variable"
+        Write-Output 1>&2 "error: missing AZP_TOKEN environment variable"
         exit 1
       fi
 
       AZP_TOKEN_FILE=/azp/.token
-      echo -n $AZP_TOKEN > "$AZP_TOKEN_FILE"
+      Write-Output -n $AZP_TOKEN > "$AZP_TOKEN_FILE"
     fi
 
     unset AZP_TOKEN
@@ -288,7 +288,7 @@ Next, we'll create the Dockerfile.
     print_header() {
       lightcyan='\033[1;36m'
       nocolor='\033[0m'
-      echo -e "${lightcyan}$1${nocolor}"
+      Write-Output -e "${lightcyan}$1${nocolor}"
     }
 
     # Let the agent ignore the token env variables
@@ -301,13 +301,13 @@ Next, we'll create the Dockerfile.
       -H 'Accept:application/json;api-version=3.0-preview' \
       "$AZP_URL/_apis/distributedtask/packages/agent?platform=linux-x64")
 
-    if echo "$AZP_AGENT_RESPONSE" | jq . >/dev/null 2>&1; then
-      AZP_AGENTPACKAGE_URL=$(echo "$AZP_AGENT_RESPONSE" \
+    if Write-Output "$AZP_AGENT_RESPONSE" | jq . >/dev/null 2>&1; then
+      AZP_AGENTPACKAGE_URL=$(Write-Output "$AZP_AGENT_RESPONSE" \
         | jq -r '.value | map([.version.major,.version.minor,.version.patch,.downloadUrl]) | sort | .[length-1] | .[3]')
     fi
 
     if [ -z "$AZP_AGENTPACKAGE_URL" -o "$AZP_AGENTPACKAGE_URL" == "null" ]; then
-      echo 1>&2 "error: could not determine a matching Azure Pipelines agent - check that account '$AZP_URL' is correct and the token is valid for that account"
+      Write-Output 1>&2 "error: could not determine a matching Azure Pipelines agent - check that account '$AZP_URL' is correct and the token is valid for that account"
       exit 1
     fi
 

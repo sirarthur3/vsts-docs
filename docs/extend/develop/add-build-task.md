@@ -107,7 +107,7 @@ Create a ```.gitignore``` file and add node_modules to it. Your build process sh
 so node_modules are built each time and don't need to be checked in.
 
 ```
-echo node_modules > .gitignore
+Write-Output node_modules > .gitignore
 ```
 
 #### Create tsconfig.json compiler options
@@ -149,7 +149,7 @@ Copy the code below and replace the ```{{placeholders}}``` with your tasks infor
         "Minor": 1,
         "Patch": 0
     },
-    "instanceNameFormat": "Echo $(samplestring)",
+    "instanceNameFormat": "Write-Output $(samplestring)",
     "inputs": [
         {
             "name": "samplestring",

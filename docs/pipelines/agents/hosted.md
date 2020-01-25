@@ -52,17 +52,17 @@ jobs:
   pool:
     vmImage: 'ubuntu-latest'
   steps:
-  - script: echo hello from Linux
+  - script: Write-Output hello from Linux
 - job: macOS
   pool:
     vmImage: 'macOS-latest'
   steps:
-  - script: echo hello from macOS
+  - script: Write-Output hello from macOS
 - job: Windows
   pool:
     vmImage: 'windows-latest'
   steps:
-  - script: echo hello from Windows
+  - script: Write-Output hello from Windows
 ```
 
 ### Notes on choosing "Hosted macOS"
@@ -178,7 +178,7 @@ The Microsoft-hosted XAML build controller is no longer supported. If you have a
 
   In case you are using a non-default version of Xcode for building your Xamarin.iOS or Xamarin.Mac apps, you should additionally execute this command line:
 
-  `/bin/bash -c "echo '##vso[task.setvariable variable=MD_APPLE_SDK_ROOT;]'$(xcodeRoot);sudo xcode-select --switch $(xcodeRoot)/Contents/Developer"`
+  `/bin/bash -c "Write-Output '##vso[task.setvariable variable=MD_APPLE_SDK_ROOT;]'$(xcodeRoot);sudo xcode-select --switch $(xcodeRoot)/Contents/Developer"`
   
   where `$(xcodeRoot)` = `/Applications/Xcode_10.1.app`
 
@@ -201,9 +201,9 @@ The Microsoft-hosted XAML build controller is no longer supported. If you have a
   ```bash
   SYMLINK=5_4_1
   MONOPREFIX=/Library/Frameworks/Mono.framework/Versions/$SYMLINK
-  echo "##vso[task.setvariable variable=DYLD_FALLBACK_LIBRARY_PATH;]$MONOPREFIX/lib:/lib:/usr/lib:$DYLD_LIBRARY_FALLBACK_PATH"
-  echo "##vso[task.setvariable variable=PKG_CONFIG_PATH;]$MONOPREFIX/lib/pkgconfig:$MONOPREFIX/share/pkgconfig:$PKG_CONFIG_PATH"
-  echo "##vso[task.setvariable variable=PATH;]$MONOPREFIX/bin:$PATH"
+  Write-Output "##vso[task.setvariable variable=DYLD_FALLBACK_LIBRARY_PATH;]$MONOPREFIX/lib:/lib:/usr/lib:$DYLD_LIBRARY_FALLBACK_PATH"
+  Write-Output "##vso[task.setvariable variable=PKG_CONFIG_PATH;]$MONOPREFIX/lib/pkgconfig:$MONOPREFIX/share/pkgconfig:$PKG_CONFIG_PATH"
+  Write-Output "##vso[task.setvariable variable=PATH;]$MONOPREFIX/bin:$PATH"
 ```
 
 #### .NET Core

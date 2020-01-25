@@ -89,7 +89,7 @@ In the agent root directory, create a .proxy file with your proxy server url.
 # [Windows](#tab/windows)
 
 ```ps
-echo http://name-of-your-proxy-server:8888 | Out-File .proxy
+Write-Output http://name-of-your-proxy-server:8888 | Out-File .proxy
 ```  
 
 If your proxy doesn't require authentication, then you're ready to configure and run the agent. See [Deploy an agent on Windows](v2-windows.md).
@@ -97,7 +97,7 @@ If your proxy doesn't require authentication, then you're ready to configure and
 # [macOS and Linux](#tab/unix)
 
 ```bash
-echo http://name-of-your-web-proxy:8888 > .proxy
+Write-Output http://name-of-your-web-proxy:8888 > .proxy
 ```  
 
 If your proxy doesn't require authentication, then you're ready to configure and run the agent. See [Deploy an agent on macOS](v2-osx.md) or [Deploy an agent on Linux](v2-linux.md).

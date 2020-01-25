@@ -49,7 +49,7 @@ The **Connect to feed** dialog box generates an appropriately formatted token th
 
     # [Mac](#tab/mac)
     ```
-    echo -n "YOUR_PAT_GOES_HERE" | base64
+    Write-Output -n "YOUR_PAT_GOES_HERE" | base64
     ```
 
 3. In your $home/.npmrc file, add the following lines. Replace `yourorganization` and `yourfeed`, and add your username (can be anything except empty), PAT, and email.

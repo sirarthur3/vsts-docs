@@ -35,7 +35,7 @@ In a release pipeline, repositories is not available. [Release artifact variable
 For example, to print the name of the `self` repo in a YAML pipeline:
 ```
 steps:
-- script: echo ${{ resources.repositories['self'].name }}
+- script: Write-Output ${{ resources.repositories['self'].name }}
 ```
 
 Repositories contain the following properties:
@@ -73,7 +73,7 @@ job =
 		{
 			"environment": null,
 			"inputs": {
-				"script": "echo hi"
+				"script": "Write-Output hi"
 			},
 			"type": "Task",
 			"task": {
@@ -97,7 +97,7 @@ For instance, to conditionally add a task only if it doesn't already exist:
 
 ```yaml
 - ${{ if not(containsValue(job.steps.*.task.id, 'f3ab91e7-bed6-436a-b651-399a66fe6c2a')) }}:
-  - script: echo conditionally inserted
+  - script: Write-Output conditionally inserted
 ```
 
 ### Variables
@@ -113,7 +113,7 @@ If the variable isn't present, then the decorator would be injected as usual.
 #### my-decorator.yml
 ```yaml
 - ${{ if ne(variables['skipInjecting'], 'true') }}
-  - script: echo Injected the decorator
+  - script: Write-Output Injected the decorator
 ```
 
 Then, in a pipeline in the organization, the author can request that the decorator not be injected.
@@ -123,5 +123,5 @@ Then, in a pipeline in the organization, the author can request that the decorat
 variables:
   skipInjecting: true
 steps:
-- script: echo This is the only step. No decorator is added.
+- script: Write-Output This is the only step. No decorator is added.
 ```
