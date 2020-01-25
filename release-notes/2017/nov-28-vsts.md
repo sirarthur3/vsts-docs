@@ -61,7 +61,7 @@ You can try it right now. Just add a new file called **.vsts-ci.yml** to the roo
 ```YAML
 queue: Hosted VS2017 
 steps:
-- script: echo hello world 
+- script: Write-Output hello world 
 ```
 
 After you commit the changes, a build definition is automatically created and queued! Ready to go beyond “hello world”?

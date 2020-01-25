@@ -45,14 +45,14 @@ for i in $(git diff --cached --name-only); do
     fi
     let DELTA_DATES=$FILE_DATE_AS_EPOCH-$FLOOR_DATE
     if (( $DELTA_DATES < 0 )); then
-      echo -e "${YELLOW}$i has an ms.date of $FILE_DATE${RESTORE}"
+      Write-Output -e "${YELLOW}$i has an ms.date of $FILE_DATE${RESTORE}"
       REJECT=1
     fi
 	fi
 done
 
 if (( $REJECT == 1 )); then
-  echo -e "${RED}commit rejected. add '${NOFRESHEN_MSG}' to the message to skip validation${RESTORE}"
+  Write-Output -e "${RED}commit rejected. add '${NOFRESHEN_MSG}' to the message to skip validation${RESTORE}"
 fi
 
 exit $REJECT

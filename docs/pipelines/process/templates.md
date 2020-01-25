@@ -35,7 +35,7 @@ parameters:
   default: false
 
 steps:
-    - script: echo ${{ parameters.yesNo }}
+    - script: Write-Output ${{ parameters.yesNo }}
 ```
 
 ```yaml
@@ -84,10 +84,10 @@ stages:
   - job: secure_buildjob
     steps:
 
-    - script: echo This happens before code 
+    - script: Write-Output This happens before code 
       displayName: 'Base: Pre-build'
 
-    - script: echo Building
+    - script: Write-Output Building
       displayName: 'Base: Build'
 
     - ${{ each step in parameters.buildSteps }}:
@@ -97,7 +97,7 @@ stages:
           ${{ if eq(pair.key, 'script') }}: # checks for buildStep with script
             'Rejecting Script: ${{ pair.value }}': error # rejects buildStep when script is found         
 
-    - script: echo This happens after code
+    - script: Write-Output This happens after code
       displayName: 'Base: Signing'
 ```
 
@@ -110,11 +110,11 @@ extends:
   template: start.yml
   parameters:
     buildSteps:  
-      - bash: echo Test #Passes
+      - bash: Write-Output Test #Passes
         displayName: Test - Will Pass
-      - bash: echo "Test"
+      - bash: Write-Output "Test"
         displayName: Test 2 - Will Pass
-      - script: echo "Script Test" # Comment out to successfully pass
+      - script: Write-Output "Script Test" # Comment out to successfully pass
         displayName: Test 3 - Will Fail
 ```
 
@@ -179,9 +179,9 @@ jobs:
   pool:
     vmImage: 'vs2017-win2016'
   steps:
-  - script: echo This script runs before the template's steps, only on Windows.
+  - script: Write-Output This script runs before the template's steps, only on Windows.
   - template: templates/npm-steps.yml  # Template reference
-  - script: echo This step runs after the template's steps.
+  - script: Write-Output This step runs after the template's steps.
 ```
 
 ### Job reuse
@@ -348,7 +348,7 @@ variables:
 - template: vars.yml  # Template reference
 
 steps:
-- script: echo My favorite vegetable is ${{ variables.favoriteVeggie }}.
+- script: Write-Output My favorite vegetable is ${{ variables.favoriteVeggie }}.
 ```
 
 
@@ -492,8 +492,8 @@ parameters:
 steps:
 - bash: |
     if [ -z "$SOLUTION" ]; then
-      echo "##vso[task.logissue type=error;]Missing template parameter \"solution\""
-      echo "##vso[task.complete result=Failed;]"
+      Write-Output "##vso[task.logissue type=error;]Missing template parameter \"solution\""
+      Write-Output "##vso[task.complete result=Failed;]"
     fi
   env:
     SOLUTION: ${{ parameters.solution }}
@@ -538,7 +538,7 @@ parameters:
   buildProjects: ''
 
 steps:
-- script: echo ${{ coalesce(parameters.foo, parameters.bar, 'Nothing to see') }}
+- script: Write-Output ${{ coalesce(parameters.foo, parameters.bar, 'Nothing to see') }}
 ```
 
 ### Insertion
@@ -575,9 +575,9 @@ jobs:
 - template: jobs/build.yml
   parameters:
     preBuild:
-    - script: echo hello from pre-build
+    - script: Write-Output hello from pre-build
     preTest:
-    - script: echo hello from pre-test
+    - script: Write-Output hello from pre-test
 ```
 
 When an array is inserted into an array, the nested array is flattened.
@@ -699,10 +699,10 @@ jobs:
     jobs:
     - job: A
       steps:
-      - script: echo This will get sandwiched between SetupMyBuildTools and PublishMyTelemetry.
+      - script: Write-Output This will get sandwiched between SetupMyBuildTools and PublishMyTelemetry.
     - job: B
       steps:
-      - script: echo So will this!
+      - script: Write-Output So will this!
 ```
 
 You can also manipulate the properties of whatever you're iterating over.
@@ -735,12 +735,12 @@ jobs:
     jobs:
     - job: A
       steps:
-      - script: echo This job depends on SomeSpecialTool, even though it's not explicitly shown here.
+      - script: Write-Output This job depends on SomeSpecialTool, even though it's not explicitly shown here.
     - job: B
       dependsOn:
       - A
       steps:
-      - script: echo This job depends on both Job A and on SomeSpecialTool.
+      - script: Write-Output This job depends on both Job A and on SomeSpecialTool.
 ```
 
 ### Escape a value

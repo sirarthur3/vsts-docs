@@ -121,7 +121,7 @@ Pipeline variables will be automatically converted into environment variables in
 In order to set a new variable `myVar` with a value of `myValue`, a script can do this:
 
 ```bash
-echo '##vso[task.setVariable variable=myVar]myValue'
+Write-Output '##vso[task.setVariable variable=myVar]myValue'
 ```
 
 ```powershell

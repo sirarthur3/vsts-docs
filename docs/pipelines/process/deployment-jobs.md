@@ -223,7 +223,7 @@ jobs:
     runOnce:
       deploy:
         steps:
-        - script: echo my first deployment
+        - script: Write-Output my first deployment
 ```
 
 With each run of this job, deployment history is recorded against the `smarthotel-dev` environment.
@@ -283,7 +283,7 @@ jobs:
         steps:
         - download: current
           artifact: drop
-        - script: echo initialize, cleanup, backup, install certs
+        - script: Write-Output initialize, cleanup, backup, install certs
       deploy:
         steps:
         - task: IISWebAppDeploymentOnMachineGroup@0
@@ -293,17 +293,17 @@ jobs:
             Package: '$(Pipeline.Workspace)/drop/**/*.zip'
       routeTraffic:
         steps:
-        - script: echo routing traffic
+        - script: Write-Output routing traffic
       postRouteTraffic:
         steps:
-        - script: echo health check post-route traffic
+        - script: Write-Output health check post-route traffic
       on:
         failure:
           steps:
-          - script: echo Restore from backup! This is on failure
+          - script: Write-Output Restore from backup! This is on failure
         success:
           steps:
-          - script: echo Notify! This is on success
+          - script: Write-Output Notify! This is on success
 ```
 
 ### Canary deployment strategy
@@ -324,7 +324,7 @@ jobs:
         - script: initialize, cleanup....   
       deploy:             
         steps: 
-        - script: echo deploy updates... 
+        - script: Write-Output deploy updates... 
         - task: KubernetesManifest@0 
           inputs: 
             action: $(strategy.action)       
@@ -335,12 +335,12 @@ jobs:
       postRouteTaffic: 
         pool: server 
         steps:           
-        - script: echo monitor application health...   
+        - script: Write-Output monitor application health...   
       on: 
         failure: 
           steps: 
-          - script: echo clean-up, rollback...   
+          - script: Write-Output clean-up, rollback...   
         success: 
           steps: 
-          - script: echo checks passed, notify... 
+          - script: Write-Output checks passed, notify... 
 ```

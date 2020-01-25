@@ -197,24 +197,24 @@ On the [Triggers tab](../build/triggers.md) select **Continuous integration (CI)
 Create ```merge.bat``` at the root of your repo:
 
 ```bat
-@echo off
-ECHO SOURCE BRANCH IS %BUILD_SOURCEBRANCH%
+@Write-Output off
+Write-Output SOURCE BRANCH IS %BUILD_SOURCEBRANCH%
 IF %BUILD_SOURCEBRANCH% == refs/heads/master (
-   ECHO Building master branch so no merge is needed.
+   Write-Output Building master branch so no merge is needed.
    EXIT
 )
 SET sourceBranch=origin/%BUILD_SOURCEBRANCH:refs/heads/=%
-ECHO GIT CHECKOUT MASTER
+Write-Output GIT CHECKOUT MASTER
 git checkout master
-ECHO GIT STATUS
+Write-Output GIT STATUS
 git status
-ECHO GIT MERGE
+Write-Output GIT MERGE
 git merge %sourceBranch% -m "Merge to master"
-ECHO GIT STATUS
+Write-Output GIT STATUS
 git status
-ECHO GIT PUSH
+Write-Output GIT PUSH
 git push origin
-ECHO GIT STATUS
+Write-Output GIT STATUS
 git status
 ```
 

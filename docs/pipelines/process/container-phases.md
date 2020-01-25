@@ -155,7 +155,7 @@ container:
   endpoint: private_dockerhub_connection
 
 steps:
-- script: echo hello
+- script: Write-Output hello
 ```
 
 or
@@ -166,7 +166,7 @@ container:
   endpoint: my_acr_connection
 
 steps:
-- script: echo hello
+- script: Write-Output hello
 ```
 
 Other container registries may also work.
@@ -182,7 +182,7 @@ container:
   options: --hostname container-test --ip 192.168.0.1
 
 steps:
-- script: echo hello
+- script: Write-Output hello
 ```
 
 Running `docker create --help` will give you the list of supported options.

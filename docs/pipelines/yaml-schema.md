@@ -182,7 +182,7 @@ variables:
 jobs:
 - job: One
   steps:
-  - script: echo First step!
+  - script: Write-Output First step!
 ```
 
 * * *
@@ -236,20 +236,20 @@ stages:
   jobs:
   - job: BuildJob
     steps:
-    - script: echo Building!
+    - script: Write-Output Building!
 - stage: Test
   jobs:
   - job: TestOnWindows
     steps:
-    - script: echo Testing on Windows!
+    - script: Write-Output Testing on Windows!
   - job: TestOnLinux
     steps:
-    - script: echo Testing on Linux!
+    - script: Write-Output Testing on Linux!
 - stage: Deploy
   jobs:
   - job: Deploy
     steps:
-    - script: echo Deploying the code!
+    - script: Write-Output Deploying the code!
 ```
 
 This example runs two stages in parallel.
@@ -312,7 +312,7 @@ jobs:
   workspace:
     clean: outputs
   steps:
-  - script: echo My first job
+  - script: Write-Output My first job
 ```
 
 ---
@@ -510,7 +510,7 @@ jobs:
     runOnce:
       deploy:
         steps:
-        - script: echo my first deployment
+        - script: Write-Output my first deployment
 ```
 ::: moniker-end
 
@@ -532,10 +532,10 @@ steps: [ script | bash | pwsh | powershell | checkout | task | templateReference
 
 ```yaml
 steps:
-- script: echo This runs in the default shell on any machine
+- script: Write-Output This runs in the default shell on any machine
 - bash: |
-    echo This multiline script always runs in Bash.
-    echo Even on Windows machines!
+    Write-Output This multiline script always runs in Bash.
+    Write-Output Even on Windows machines!
 - pwsh: |
     Write-Host "This multiline script always runs in PowerShell Core."
     Write-Host "Even on non-Windows machines!"
@@ -608,7 +608,7 @@ stages:
     variables:  # job-level
       JOB_VAR: 'a job var'
     steps:
-    - script: echo $(MY_VAR) $(STAGE_VAR) $(JOB_VAR)
+    - script: Write-Output $(MY_VAR) $(STAGE_VAR) $(JOB_VAR)
 ```
 
 ::: moniker-end
@@ -625,7 +625,7 @@ jobs:
   variables:  # job-level
     JOB_VAR: 'a job var'
   steps:
-  - script: echo $(MY_VAR) $(STAGE_VAR) $(JOB_VAR)
+  - script: Write-Output $(MY_VAR) $(STAGE_VAR) $(JOB_VAR)
 ```
 
 ::: moniker-end
@@ -978,7 +978,7 @@ parameters:
   default: false
 
 steps:
-- script: echo ${{ parameters.yesNo }}
+- script: Write-Output ${{ parameters.yesNo }}
 ```
 
 ```yaml
@@ -1537,7 +1537,7 @@ strategy:                 # deployment strategy
   runOnce:                # default strategy
     deploy:
       steps:
-      - script: echo Hello world
+      - script: Write-Output Hello world
 ```
 
 If you specify an environment or one of its resources but don't need to specify other properties, you can shorten the syntax to:
@@ -1548,7 +1548,7 @@ strategy:                 # deployment strategy
     runOnce:              # default strategy
       deploy:
         steps:
-        - script: echo Hello world
+        - script: Write-Output Hello world
 ```
 
 # [Example](#tab/example)
@@ -1635,7 +1635,7 @@ If you don't specify a command mode, you can shorten the `target` structure to:
 
 ```yaml
 steps:
-- script: echo Hello world!
+- script: Write-Output Hello world!
   displayName: Say hello
 ```
 
@@ -1681,7 +1681,7 @@ If you don't specify a command mode, you can shorten the `target` structure to:
 steps:
 - bash: |
     which bash
-    echo Hello $name
+    Write-Output Hello $name
   displayName: Multiline Bash script
   env:
     name: Microsoft
@@ -1719,7 +1719,7 @@ steps:
 
 ```yaml
 steps:
-- pwsh: echo Hello $(name)
+- pwsh: Write-Output Hello $(name)
   displayName: Say hello
   name: firstStep
   workingDirectory: $(build.sourcesDirectory)
@@ -1759,7 +1759,7 @@ steps:
 
 ```yaml
 steps:
-- powershell: echo Hello $(name)
+- powershell: Write-Output Hello $(name)
   displayName: Say hello
   name: firstStep
   workingDirectory: $(build.sourcesDirectory)

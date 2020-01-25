@@ -350,7 +350,7 @@ Send this as the password field in a "Basic" authorization header without a user
 (In other words, base64-encode the value of `:<PAT>`, including the colon.)
 
 ```
-AUTH=$(echo -n ":$REPO_PAT" | openssl base64 | tr -d '\n')
+AUTH=$(Write-Output -n ":$REPO_PAT" | openssl base64 | tr -d '\n')
 git -c http.<repo URL>.extraheader="AUTHORIZATION: basic $AUTH" clone <repo URL> --no-checkout --branch master
 ```
 

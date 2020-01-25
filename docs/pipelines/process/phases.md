@@ -61,7 +61,7 @@ In the simplest case, a pipeline has a single job. In that case, you do not have
 pool:
   vmImage: 'ubuntu-16.04'
 steps:
-- bash: echo "Hello world"
+- bash: Write-Output "Hello world"
 ```
 
 You may want to specify additional properties on that job. In that case, you can use the `job` keyword.
@@ -73,7 +73,7 @@ jobs:
   pool:
     vmImage: 'ubuntu-16.04'
   steps:
-  - bash: echo "Hello world"
+  - bash: Write-Output "Hello world"
 ```
 
 Your pipeline may have multiple jobs. In that case, use the `jobs` keyword.
@@ -82,11 +82,11 @@ Your pipeline may have multiple jobs. In that case, use the `jobs` keyword.
 jobs:
 - job: A
   steps:
-  - bash: echo "A"
+  - bash: Write-Output "A"
 
 - job: B
   steps:
-  - bash: echo "B"
+  - bash: Write-Output "B"
 ```
 
 ::: moniker-end
@@ -155,7 +155,7 @@ The syntax for a deployment job is:
     runOnce:
       deploy:
         steps:
-        - script: echo Hi!
+        - script: Write-Output Hi!
 ```
 
 ::: moniker-end
@@ -242,7 +242,7 @@ pool:
   name: myPrivateAgents    # your job runs on an agent in this pool
   demands: agent.os -equals Windows_NT    # the agent must have this capability to run the job
 steps:
-- script: echo hello world
+- script: Write-Output hello world
 ```
 
 Or multiple demands:
@@ -254,7 +254,7 @@ pool:
   - agent.os -equals Darwin
   - anotherCapability -equals somethingElse
 steps:
-- script: echo hello world
+- script: Write-Output hello world
 ```
 
 ::: moniker-end
@@ -339,11 +339,11 @@ Example jobs that build sequentially:
 jobs:
 - job: Debug
   steps:
-  - script: echo hello from the Debug build
+  - script: Write-Output hello from the Debug build
 - job: Release
   dependsOn: Debug
   steps:
-  - script: echo hello from the Release build
+  - script: Write-Output hello from the Release build
 ```
 
 Example jobs that build in parallel (no dependencies):
@@ -354,17 +354,17 @@ jobs:
   pool:
     vmImage: 'vs2017-win2016'
   steps:
-  - script: echo hello from Windows
+  - script: Write-Output hello from Windows
 - job: macOS
   pool:
     vmImage: 'macOS-10.13'
   steps:
-  - script: echo hello from macOS
+  - script: Write-Output hello from macOS
 - job: Linux
   pool:
     vmImage: 'ubuntu-16.04'
   steps:
-  - script: echo hello from Linux
+  - script: Write-Output hello from Linux
 ```
 
 Example of fan out:
@@ -373,15 +373,15 @@ Example of fan out:
 jobs:
 - job: InitialJob
   steps:
-  - script: echo hello from initial job
+  - script: Write-Output hello from initial job
 - job: SubsequentA
   dependsOn: InitialJob
   steps:
-  - script: echo hello from subsequent A
+  - script: Write-Output hello from subsequent A
 - job: SubsequentB
   dependsOn: InitialJob
   steps:
-  - script: echo hello from subsequent B
+  - script: Write-Output hello from subsequent B
 ```
 
 Example of fan in:
@@ -390,16 +390,16 @@ Example of fan in:
 jobs:
 - job: InitialA
   steps:
-  - script: echo hello from initial A
+  - script: Write-Output hello from initial A
 - job: InitialB
   steps:
-  - script: echo hello from initial B
+  - script: Write-Output hello from initial B
 - job: Subsequent
   dependsOn:
   - InitialA
   - InitialB
   steps:
-  - script: echo hello from subsequent
+  - script: Write-Output hello from subsequent
 ```
 
 ::: moniker-end
@@ -480,7 +480,7 @@ jobs:
   dependsOn: A
   condition: failed()
   steps:
-  - script: echo this will run when A fails
+  - script: Write-Output this will run when A fails
 
 - job: C
   dependsOn:
@@ -488,7 +488,7 @@ jobs:
   - B
   condition: succeeded('B')
   steps:
-  - script: echo this will run when B runs and succeeds
+  - script: Write-Output this will run when B runs and succeeds
 ```
 
 Example of using a [custom condition](conditions.md):
@@ -497,13 +497,13 @@ Example of using a [custom condition](conditions.md):
 jobs:
 - job: A
   steps:
-  - script: echo hello
+  - script: Write-Output hello
 
 - job: B
   dependsOn: A
   condition: and(succeeded(), eq(variables['build.sourceBranch'], 'refs/heads/master'))
   steps:
-  - script: echo this only runs for master
+  - script: Write-Output this only runs for master
 ```
 
 You can specify that a job run based on the value of an output variable set in a previous job. In this case, you can only use variables set in directly dependent jobs:
@@ -512,14 +512,14 @@ You can specify that a job run based on the value of an output variable set in a
 jobs:
 - job: A
   steps:
-  - script: "echo ##vso[task.setvariable variable=skipsubsequent;isOutput=true]false"
+  - script: "Write-Output ##vso[task.setvariable variable=skipsubsequent;isOutput=true]false"
     name: printvar
 
 - job: B
   condition: and(succeeded(), ne(dependencies.A.outputs['printvar.skipsubsequent'], 'true'))
   dependsOn: A
   steps:
-  - script: echo hello from B
+  - script: Write-Output hello from B
 ```
 
 ::: moniker-end
@@ -639,7 +639,7 @@ In the example below, we've hard-coded the JSON string, but it could be generate
 jobs:
 - job: generator
   steps:
-  - bash: echo "##vso[task.setVariable variable=legs;isOutput=true]{'a':{'myvar':'A'}, 'b':{'myvar':'B'}}"
+  - bash: Write-Output "##vso[task.setVariable variable=legs;isOutput=true]{'a':{'myvar':'A'}, 'b':{'myvar':'B'}}"
     name: mtrx
   # This expands to the matrix
   #   a:
@@ -651,7 +651,7 @@ jobs:
   strategy:
     matrix: $[ dependencies.generator.outputs['mtrx.legs'] ]
   steps:
-  - script: echo $(myvar) # echos A or B depending on which leg is running
+  - script: Write-Output $(myvar) # Write-Outputs A or B depending on which leg is running
 ```
 
 ::: moniker-end
@@ -746,11 +746,11 @@ variables:
   "my var with spaces": var with spaces value
 
 steps:
-- script: echo Input macro = $(mySimpleVar). Env var = %MYSIMPLEVAR%
+- script: Write-Output Input macro = $(mySimpleVar). Env var = %MYSIMPLEVAR%
   condition: eq(variables['agent.os'], 'Windows_NT')
-- script: echo Input macro = $(mySimpleVar). Env var = $MYSIMPLEVAR
+- script: Write-Output Input macro = $(mySimpleVar). Env var = $MYSIMPLEVAR
   condition: in(variables['agent.os'], 'Darwin', 'Linux')
-- bash: echo Input macro = $(my.dotted.var). Env var = $MY_DOTTED_VAR
+- bash: Write-Output Input macro = $(my.dotted.var). Env var = $MY_DOTTED_VAR
 - powershell: Write-Host "Input macro = $(my var with spaces). Env var = $env:MY_VAR_WITH_SPACES"
 ```
 

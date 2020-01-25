@@ -71,7 +71,7 @@ In the simplest case, you do not need any logical boundaries in your pipeline. I
 pool:
   vmImage: 'ubuntu-16.04'
 steps:
-- bash: echo "Hello world"
+- bash: Write-Output "Hello world"
 ```
 
 ```yaml
@@ -79,11 +79,11 @@ steps:
 jobs:
 - job: A
   steps:
-  - bash: echo "A"
+  - bash: Write-Output "A"
 
 - job: B
   steps:
-  - bash: echo "B"
+  - bash: Write-Output "B"
 ```
 
 If you organize your pipeline into multiple stages, you use the `stages` keyword.

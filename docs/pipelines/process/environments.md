@@ -67,7 +67,7 @@ A [deployment job](deployment-jobs.md) is a collection of steps to be run sequen
       runOnce:
         deploy:
           steps:
-          - script: echo Hello world
+          - script: Write-Output Hello world
 ```
 
 > [!NOTE]

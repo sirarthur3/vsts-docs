@@ -141,7 +141,7 @@ pr:
     - **/*.cs
 
 steps:
-- script: echo My PR build!
+- script: Write-Output My PR build!
 ```
 
 ### Use YAML template expressions inline
@@ -157,7 +157,7 @@ YAML templates are a powerful way to reuse parts of pipelines. In addition to fa
 We've now relaxed the restriction and allow inline templates like you see in the example below.
 
 ```yaml
-- script: echo The solution file is ${{ parameters.solution }}
+- script: Write-Output The solution file is ${{ parameters.solution }}
 ```
 
 ### Improve troubleshooting with the pipeline initialization log

@@ -30,7 +30,7 @@ You can use a combination of tokens, variables, and underscore characters.
 ```yaml
 name: $(TeamProject)_$(BuildDefinitionName)_$(SourceBranchName)_$(Date:yyyyMMdd)$(Rev:.r)
 steps:
-- script: echo hello world
+- script: Write-Output hello world
 ```
 
 ::: moniker-end
@@ -139,8 +139,8 @@ variables:
 
 
 steps:
-- script: echo $(MyRunNumber) # display MyRunNumber
-- script: echo $(Build.BuildNumber) #display Run Number
+- script: Write-Output $(MyRunNumber) # display MyRunNumber
+- script: Write-Output $(Build.BuildNumber) #display Run Number
 ```
 
 ::: moniker-end

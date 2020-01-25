@@ -23,13 +23,13 @@ The general format for a logging command is:
 ##vso[area.action property1=value;property2=value;...]message
 ```
 
-To invoke a logging command, echo the command via standard output.
+To invoke a logging command, Write-Output the command via standard output.
 
 # [Bash](#tab/bash)
 
 ```bash
 #!/bin/bash
-echo "##vso[task.setvariable variable=testvar;]testvalue"
+Write-Output "##vso[task.setvariable variable=testvar;]testvalue"
 ```
 
 # [PowerShell](#tab/powershell)
@@ -66,7 +66,7 @@ Log an error or warning message in the timeline record of the current task.
 
 ```bash
 #!/bin/bash
-echo "##vso[task.logissue type=error]Something went very wrong."
+Write-Output "##vso[task.logissue type=error]Something went very wrong."
 exit 1
 ```
 
@@ -89,7 +89,7 @@ exit 1
 
 ```bash
 #!/bin/bash
-echo "##vso[task.logissue type=warning;sourcepath=consoleapp/main.cs;linenumber=1;columnnumber=1;code=100;]Found something that could be a problem."
+Write-Output "##vso[task.logissue type=warning;sourcepath=consoleapp/main.cs;linenumber=1;columnnumber=1;code=100;]Found something that could be a problem."
 ```
 
 # [PowerShell](#tab/powershell)
@@ -117,13 +117,13 @@ Set progress and current operation for the current task.
 # [Bash](#tab/bash)
 
 ```bash
-echo "Begin a lengthy process..."
+Write-Output "Begin a lengthy process..."
 for i in {0..100..10}
 do
    sleep 1
-   echo "##vso[task.setprogress value=$i;]Sample Progress Indicator"
+   Write-Output "##vso[task.setprogress value=$i;]Sample Progress Indicator"
 do
-echo "Lengthy process is complete."
+Write-Output "Lengthy process is complete."
 ```
 
 # [PowerShell](#tab/powershell)
@@ -233,16 +233,16 @@ When `issecret` is set to `true`, the value of the variable will be saved as sec
 Set the variables:
 
 ```bash
-echo "##vso[task.setvariable variable=sauce;]crushed tomatoes"
-echo "##vso[task.setvariable variable=secretSauce;issecret=true]crushed tomatoes with garlic"
+Write-Output "##vso[task.setvariable variable=sauce;]crushed tomatoes"
+Write-Output "##vso[task.setvariable variable=secretSauce;issecret=true]crushed tomatoes with garlic"
 ```
 
 Read the variables:
 
 ```bash
-echo "Non-secrets automatically mapped in, sauce is $SAUCE"
-echo "Secrets are not automatically mapped in, secretSauce is $SECRETSAUCE"
-echo "You can use macro replacement to get secrets, and they'll be masked in the log: $(secretSauce)"
+Write-Output "Non-secrets automatically mapped in, sauce is $SAUCE"
+Write-Output "Secrets are not automatically mapped in, secretSauce is $SECRETSAUCE"
+Write-Output "You can use macro replacement to get secrets, and they'll be masked in the log: $(secretSauce)"
 ```
 
 # [PowerShell](#tab/powershell)

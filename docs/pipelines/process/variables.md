@@ -103,9 +103,9 @@ jobs:
   variables:
     job_variable1: value1    # this is only available in job1
   steps:
-  - bash: echo $(global_variable)
-  - bash: echo $(job_variable1)
-  - bash: echo $JOB_VARIABLE1 # variables are available in the script environment too
+  - bash: Write-Output $(global_variable)
+  - bash: Write-Output $(job_variable1)
+  - bash: Write-Output $JOB_VARIABLE1 # variables are available in the script environment too
 
 - job: job2
   pool:
@@ -113,9 +113,9 @@ jobs:
   variables:
     job_variable2: value2    # this is only available in job2
   steps:
-  - bash: echo $(global_variable)
-  - bash: echo $(job_variable2)
-  - bash: echo $GLOBAL_VARIABLE
+  - bash: Write-Output $(global_variable)
+  - bash: Write-Output $(job_variable2)
+  - bash: Write-Output $GLOBAL_VARIABLE
 ```
 
 ### Specifying variables
@@ -271,7 +271,7 @@ For these examples, assume we have a task called `MyTask` which sets an output v
 steps:
 - task: MyTask@1  # this step generates the output variable
   name: ProduceVar  # because we're going to depend on it, we need to name the step
-- script: echo $(ProduceVar.MyVar) # this step uses the output variable
+- script: Write-Output $(ProduceVar.MyVar) # this step uses the output variable
 ```
 
 ### Use outputs in a different job
@@ -288,7 +288,7 @@ jobs:
     # map the output variable from A into this job
     varFromA: $[ dependencies.A.outputs['ProduceVar.MyVar'] ]
   steps:
-  - script: echo $(varFromA) # this step uses the mapped-in variable
+  - script: Write-Output $(varFromA) # this step uses the mapped-in variable
 ```
 
 #### [Classic](#tab/classic/)
@@ -322,13 +322,13 @@ steps:
 
 # Create a variable
 - bash: |
-    echo "##vso[task.setvariable variable=sauce]crushed tomatoes"
+    Write-Output "##vso[task.setvariable variable=sauce]crushed tomatoes"
 
 # Use the variable
 # "$(sauce)" is replaced by the contents of the `sauce` variable by Azure Pipelines
 # before handing the body of the script to the shell.
 - bash: |
-    echo my pipeline variable is $(sauce)
+    Write-Output my pipeline variable is $(sauce)
 ```
 
 Subsequent steps will also have the pipeline variable added to their environment.
@@ -339,11 +339,11 @@ steps:
 # Create a variable
 # Note that this does _not_ update the environment of the current script.
 - bash: |
-    echo "##vso[task.setvariable variable=sauce]crushed tomatoes"
+    Write-Output "##vso[task.setvariable variable=sauce]crushed tomatoes"
 
 # An environment variable called `SAUCE` has been added to all downstream steps
 - bash: |
-    echo "my environment variable is $SAUCE"
+    Write-Output "my environment variable is $SAUCE"
 - pwsh: |
     Write-Host "my environment variable is $env:SAUCE"
 ```
@@ -362,10 +362,10 @@ jobs:
   pool:
     vmImage: 'vs2017-win2016'
   steps:
-  - powershell: echo "##vso[task.setvariable variable=myOutputVar;isOutput=true]this is the value"
+  - powershell: Write-Output "##vso[task.setvariable variable=myOutputVar;isOutput=true]this is the value"
     name: setvarStep
-  - script: echo $(setvarStep.myOutputVar)
-    name: echovar
+  - script: Write-Output $(setvarStep.myOutputVar)
+    name: Write-Outputvar
 
 # Map the variable into job B
 - job: B
@@ -376,8 +376,8 @@ jobs:
     myVarFromJobA: $[ dependencies.A.outputs['setvarStep.myOutputVar'] ]  # map in the variable
                                                                           # remember, expressions require single quotes
   steps:
-  - script: echo $(myVarFromJobA)
-    name: echovar
+  - script: Write-Output $(myVarFromJobA)
+    name: Write-Outputvar
 ```
 
 If you're setting a variable from a [matrix](phases.md?tab=yaml#parallelexec)
@@ -402,10 +402,10 @@ jobs:
         configuration: release
         platform: x64
   steps:
-  - script: echo "##vso[task.setvariable variable=myOutputVar;isOutput=true]this is the $(configuration) value"
+  - script: Write-Output "##vso[task.setvariable variable=myOutputVar;isOutput=true]this is the $(configuration) value"
     name: setvarStep
-  - script: echo $(setvarStep.myOutputVar)
-    name: echovar
+  - script: Write-Output $(setvarStep.myOutputVar)
+    name: Write-Outputvar
 
 # Map the variable from the debug job
 - job: B
@@ -415,8 +415,8 @@ jobs:
   variables:
     myVarFromJobADebug: $[ dependencies.A.outputs['debugJob.setvarStep.myOutputVar'] ]
   steps:
-  - script: echo $(myVarFromJobADebug)
-    name: echovar
+  - script: Write-Output $(myVarFromJobADebug)
+    name: Write-Outputvar
 ```
 
 ```yaml
@@ -428,10 +428,10 @@ jobs:
     vmImage: 'ubuntu-16.04'
     parallel: 2 # Two slices
   steps:
-  - script: echo "##vso[task.setvariable variable=myOutputVar;isOutput=true]this is the slice $(system.jobPositionInPhase) value"
+  - script: Write-Output "##vso[task.setvariable variable=myOutputVar;isOutput=true]this is the slice $(system.jobPositionInPhase) value"
     name: setvarStep
-  - script: echo $(setvarStep.myOutputVar)
-    name: echovar
+  - script: Write-Output $(setvarStep.myOutputVar)
+    name: Write-Outputvar
 
 # Map the variable from the job for the first slice
 - job: B
@@ -441,8 +441,8 @@ jobs:
   variables:
     myVarFromJobsA1: $[ dependencies.A.outputs['job1.setvarStep.myOutputVar'] ]
   steps:
-  - script: "echo $(myVarFromJobsA1)"
-    name: echovar
+  - script: "Write-Output $(myVarFromJobsA1)"
+    name: Write-Outputvar
 ```
 
 The output variables of a [deployment](deployment-jobs.md) job also need to be prefixed with the job name (in this case, `A`):
@@ -459,10 +459,10 @@ jobs:
     runOnce:
       deploy:
         steps:
-        - script: echo "##vso[task.setvariable variable=myOutputVar;isOutput=true]this is the deployment variable value"
+        - script: Write-Output "##vso[task.setvariable variable=myOutputVar;isOutput=true]this is the deployment variable value"
           name: setvarStep
-        - script: echo $(setvarStep.myOutputVar)
-          name: echovar
+        - script: Write-Output $(setvarStep.myOutputVar)
+          name: Write-Outputvar
 
 # Map the variable from the job for the first slice
 - job: B
@@ -472,8 +472,8 @@ jobs:
   variables:
     myVarFromDeploymentJob: $[ dependencies.A.outputs['A.setvarStep.myOutputVar'] ]
   steps:
-  - script: "echo $(myVarFromDeploymentJob)"
-    name: echovar
+  - script: "Write-Output $(myVarFromDeploymentJob)"
+    name: Write-Outputvar
 ```
 
 ::: moniker-end
@@ -498,7 +498,7 @@ For instance, a script task whose output variable reference name is `producer` c
 
 ```cmd
 mkdir myDir
-echo ##vso[task.setvariable variable=newworkdir;isOutput=true]$(System.DefaultWorkingDirectory)\myDir
+Write-Output ##vso[task.setvariable variable=newworkdir;isOutput=true]$(System.DefaultWorkingDirectory)\myDir
 ```
 
 The output variable `newworkdir` can be referenced in the input of a downstream task as `$(producer.newworkdir)`.
@@ -530,7 +530,7 @@ jobs:
   variables:
     a: $[counter(format('{0:yyyyMMdd}', pipeline.startTime), 100)]
   steps:
-    - bash: echo $(a)
+    - bash: Write-Output $(a)
 ```
 
 For more information about counters, dependencies, and other expressions, see [expressions](expressions.md).
@@ -600,7 +600,7 @@ stages:
     - name: a
       value: 'job yaml'
     steps:
-      - bash: echo $(a)        # This will be 'job yaml'
+      - bash: Write-Output $(a)        # This will be 'job yaml'
 ```
 
 > [!NOTE]
@@ -615,10 +615,10 @@ jobs:
     a: 10
   steps:
     - bash: |
-        echo $(a)            # This will be 10
-        echo '##vso[task.setvariable variable=a]20'
-        echo $(a)            # This will also be 10, since the expansion of $(a) happens before the step
-    - bash: echo $(a)        # This will be 20, since the variables are expanded just before the step
+        Write-Output $(a)            # This will be 10
+        Write-Output '##vso[task.setvariable variable=a]20'
+        Write-Output $(a)            # This will also be 10, since the expansion of $(a) happens before the step
+    - bash: Write-Output $(a)        # This will be 20, since the variables are expanded just before the step
 ```
 
 There are two steps in the above example, and the expansion of `$(a)` happens once at the beginning of the job, and once at the beginning of each of the two steps.
@@ -641,7 +641,7 @@ If the variable `a` is an output variable from a previous job, then you can use 
 ```yaml
 - job: A
   steps:
-  - powershell: echo "##vso[task.setvariable variable=a;isOutput=true]10"
+  - powershell: Write-Output "##vso[task.setvariable variable=a;isOutput=true]10"
     name: a_step
 
 # Map the variable into job B
@@ -663,7 +663,7 @@ variables:
   myOuter: $(myInner)
 
 steps:
-- script: echo $(myOuter)  # prints "someValue"
+- script: Write-Output $(myOuter)  # prints "someValue"
   displayName: Variable is $(myOuter)  # display name is "Variable is $(myInner)"
 ```
 
@@ -685,15 +685,15 @@ Variables are expanded once when the run is started, and again, at the beginning
 - In one of the steps (a bash script step), you run the following script:
 
    ```bash
-   echo $(a)            # This will be 10
-   echo '##vso[task.setvariable variable=a]20'
-   echo $(a)            # This will also be 10, since the expansion of $(a) happens before the step
+   Write-Output $(a)            # This will be 10
+   Write-Output '##vso[task.setvariable variable=a]20'
+   Write-Output $(a)            # This will also be 10, since the expansion of $(a) happens before the step
    ```
 
 - In the next step (another bash script step), you run the following script:
 
    ```bash
-   echo $(a)            # This will be 20, since the variables are expanded just before the step
+   Write-Output $(a)            # This will be 20, since the variables are expanded just before the step
    ```
 
 

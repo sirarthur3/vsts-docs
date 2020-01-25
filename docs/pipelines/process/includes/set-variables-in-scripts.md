@@ -16,8 +16,8 @@ ms.topic: include
 ![icon](../../tasks/utility/media/batch-script.png) Set the `sauce` and `secret.Sauce` variables
 
 ```bat
-@echo ##vso[task.setvariable variable=sauce]crushed tomatoes
-@echo ##vso[task.setvariable variable=secret.Sauce;issecret=true]crushed tomatoes with garlic
+@Write-Output ##vso[task.setvariable variable=sauce]crushed tomatoes
+@Write-Output ##vso[task.setvariable variable=secret.Sauce;issecret=true]crushed tomatoes with garlic
 ```
 
 ![icon](../../tasks/utility/media/batch-script.png) Read the variables
@@ -31,12 +31,12 @@ Arguments
 Script
 
  ```bat
-@echo off
+@Write-Output off
 set sauceArgument=%~1
 set secretSauceArgument=%~2
-@echo No problem reading %sauceArgument% or %SAUCE%
-@echo But I cannot read %SECRET_SAUCE%
-@echo But I can read %secretSauceArgument% (but the log is redacted so I do not spoil
+@Write-Output No problem reading %sauceArgument% or %SAUCE%
+@Write-Output But I cannot read %SECRET_SAUCE%
+@Write-Output But I can read %secretSauceArgument% (but the log is redacted so I do not spoil
       the secret)
 ```
 
@@ -79,8 +79,8 @@ Write-Host But I can read $secretSauceArgument "(but the log is redacted so I do
 
 ```bash
 #!/bin/bash
-echo "##vso[task.setvariable variable=sauce]crushed tomatoes"
-echo "##vso[task.setvariable variable=secret.Sauce;issecret=true]crushed tomatoes with garlic"
+Write-Output "##vso[task.setvariable variable=sauce]crushed tomatoes"
+Write-Output "##vso[task.setvariable variable=secret.Sauce;issecret=true]crushed tomatoes with garlic"
 ```
 
 ![icon](../../tasks/utility/media/shell-script.png) Read the variables
@@ -95,9 +95,9 @@ Script
 
 ```bash
 #!/bin/bash
-echo "No problem reading $1 or $SAUCE"
-echo "But I cannot read $SECRET_SAUCE"
-echo "But I can read $2 (but the log is redacted so I do not spoil the secret)"
+Write-Output "No problem reading $1 or $SAUCE"
+Write-Output "But I cannot read $SECRET_SAUCE"
+Write-Output "But I can read $2 (but the log is redacted so I do not spoil the secret)"
 ```
 
 ---

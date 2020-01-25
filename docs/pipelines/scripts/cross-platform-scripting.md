@@ -55,13 +55,13 @@ If you need to access an operating system-provided value like PATH, you'll need 
 
 However, Azure Pipelines offers a cross-platform way to refer to variables that
 it knows about. By surrounding a variable name in `$( )`, it will be expanded
-before the platform's shell ever sees it. For instance, if you want to echo out
+before the platform's shell ever sees it. For instance, if you want to Write-Output out
 the ID of the pipeline, the following script is cross-platform friendly:
 
 #### [YAML](#tab/yaml/)
 ```yaml
 steps:
-- script: echo This is pipeline $(System.DefinitionId)
+- script: Write-Output This is pipeline $(System.DefinitionId)
 ```
 
 This also works for variables you specify in the pipeline.
@@ -71,7 +71,7 @@ variables:
   Example: 'myValue'
 
 steps:
-- script: echo The value passed in is $(Example)
+- script: Write-Output The value passed in is $(Example)
 ```
 
 #### [Classic](#tab/classic/)
@@ -79,7 +79,7 @@ steps:
 
 2. Replace the body of the script with:
    ```
-   echo This is pipeline $(System.DefinitionId)
+   Write-Output This is pipeline $(System.DefinitionId)
    ```
 
 * * *
@@ -103,11 +103,11 @@ trigger:
         - master
 steps:
 - bash: |
-    echo "Hello world from $AGENT_NAME running on $AGENT_OS"
+    Write-Output "Hello world from $AGENT_NAME running on $AGENT_OS"
     case $BUILD_REASON in
-            "Manual") echo "$BUILD_REQUESTEDFOR manually queued the build." ;;
-            "IndividualCI") echo "This is a CI build for $BUILD_REQUESTEDFOR." ;;
-            "BatchedCI") echo "This is a batched CI build for $BUILD_REQUESTEDFOR." ;;
+            "Manual") Write-Output "$BUILD_REQUESTEDFOR manually queued the build." ;;
+            "IndividualCI") Write-Output "This is a CI build for $BUILD_REQUESTEDFOR." ;;
+            "BatchedCI") Write-Output "This is a batched CI build for $BUILD_REQUESTEDFOR." ;;
         *) $BUILD_REASON ;;
     esac
   displayName: Hello world
@@ -121,9 +121,9 @@ steps:
 3. Replace the body of the script with:
    ```bash
    if [ -n "$SYSTEM_PULLREQUEST_PULLREQUESTNUMBER" ]; then
-    echo This is for pull request $SYSTEM_PULLREQUEST_PULLREQUESTNUMBER
+    Write-Output This is for pull request $SYSTEM_PULLREQUEST_PULLREQUESTNUMBER
    else
-    echo This is not a pull request build. The trigger was $BUILD_REASON
+    Write-Output This is not a pull request build. The trigger was $BUILD_REASON
    fi
    ```
 
@@ -150,13 +150,13 @@ steps:
 # Linux
 - bash: |
     export IPADDR=$(ip addr | grep 'state UP' -A2 | tail -n1 | awk '{print $2}' | cut -f1  -d'/')
-    echo "##vso[task.setvariable variable=IP_ADDR]$IPADDR"
+    Write-Output "##vso[task.setvariable variable=IP_ADDR]$IPADDR"
   condition: eq( variables['Agent.OS'], 'Linux' )
   displayName: Get IP on Linux
 # macOS
 - bash: |
     export IPADDR=$(ifconfig | grep 'en0' -A3 | tail -n1 | awk '{print $2}')
-    echo "##vso[task.setvariable variable=IP_ADDR]$IPADDR"
+    Write-Output "##vso[task.setvariable variable=IP_ADDR]$IPADDR"
   condition: eq( variables['Agent.OS'], 'Darwin' )
   displayName: Get IP on macOS
 # Windows
@@ -168,7 +168,7 @@ steps:
 
 # now we use the value, no matter where we got it
 - script: |
-    echo The IP address is $(IP_ADDR)
+    Write-Output The IP address is $(IP_ADDR)
 ```
 
 #### [Classic](#tab/classic/)
@@ -181,7 +181,7 @@ First, add a Linux script.
 3. Replace the body of the script with:
    ```bash
    export IPADDR=$(ip addr | grep 'state UP' -A2 | tail -n1 | awk '{print $2}' | cut -f1  -d'/')
-   echo ##vso[task.setvariable variable=IP_ADDR]$IPADDR
+   Write-Output ##vso[task.setvariable variable=IP_ADDR]$IPADDR
    ```
 
 4. Change the value of **Run this task** to "Custom conditions".
@@ -193,7 +193,7 @@ Next, add a macOS script.
 1. Repeat the above steps, but for the body of the script, enter:
    ```bash
    export IPADDR=$(ifconfig | grep 'en0' -A3 | tail -n1 | awk '{print $2}')
-   echo ##vso[task.setvariable variable=IP_ADDR]$IPADDR
+   Write-Output ##vso[task.setvariable variable=IP_ADDR]$IPADDR
    ```
 
 2. For the **Custom condition**, enter "eq( variables['Agent.OS'], 'Darwin' )".
@@ -220,7 +220,7 @@ Finally, add a task which uses the value, no matter how we got it.
 
 2. Replace the body of the task with:
    ```
-   echo The IP address is $(IP_ADDR)
+   Write-Output The IP address is $(IP_ADDR)
    ```
 
 * * *

@@ -437,14 +437,14 @@ The Bash syntax for doing that is `set +x`.
 
 ```bash
 set +x
-echo ##vso[task.setvariable variable=MY_VAR]my_value
+Write-Output ##vso[task.setvariable variable=MY_VAR]my_value
 set -x
 ```
 
 #### Why does this happen?
 
 Many Bash scripts include the `set -x` command to assist with debugging.
-Bash will trace exactly what command was executed and echo it to stdout.
+Bash will trace exactly what command was executed and Write-Output it to stdout.
 This will cause the agent to see the `##vso` command twice, and the second time, Bash will have added the `'` character to the end.
 
 For instance, consider this pipeline:
@@ -453,13 +453,13 @@ For instance, consider this pipeline:
 steps:
 - bash: |
     set -x
-    echo ##vso[task.setvariable variable=MY_VAR]my_value
+    Write-Output ##vso[task.setvariable variable=MY_VAR]my_value
 ```
 
 On stdout, the agent will see two lines:
 ```bash
 ##vso[task.setvariable variable=MY_VAR]my_value
-+ echo '##vso[task.setvariable variable=MY_VAR]my_value'
++ Write-Output '##vso[task.setvariable variable=MY_VAR]my_value'
 ```
 
 When the agent sees the first line, `MY_VAR` will be set to the correct value, "my_value".

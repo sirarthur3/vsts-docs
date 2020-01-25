@@ -55,12 +55,12 @@ jobs:
   container: python
 
   steps:
-  - script: echo Running in the job container
+  - script: Write-Output Running in the job container
 
-  - script: echo Running on the host
+  - script: Write-Output Running on the host
     target: host
 
-  - script: echo Running in another container, in restricted commands mode
+  - script: Write-Output Running in another container, in restricted commands mode
     target:
       container: node
       commands: restricted

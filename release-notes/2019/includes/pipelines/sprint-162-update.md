@@ -32,8 +32,8 @@ extends:
   parameters:
     runTests: true
     postBuildSteps:
-    - script: echo This step runs after the build!
-    - script: echo This step does too!
+    - script: Write-Output This step runs after the build!
+    - script: Write-Output This step does too!
 
 # build-template.yml
 parameters:
@@ -105,23 +105,23 @@ jobs:
       maxParallel: 5 #for percentages, mention as x%
       preDeploy:
         steps:
-        - script: echo initialize, cleanup, backup, install certs...
+        - script: Write-Output initialize, cleanup, backup, install certs...
       deploy:              
         steps:                                     
-        - script: echo deploy ...      
+        - script: Write-Output deploy ...      
       routeTraffic:
         steps:
-        - script: echo routing traffic...   
+        - script: Write-Output routing traffic...   
       postRouteTaffic:
         steps:          
-        - script: echo health check post routing traffic...  
+        - script: Write-Output health check post routing traffic...  
       on:
         failure:
           steps:
-          - script: echo restore from backup ..     
+          - script: Write-Output restore from backup ..     
         success:
           steps:
-          - script: echo notify passed...
+          - script: Write-Output notify passed...
 ```
 
 > [!NOTE]

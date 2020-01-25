@@ -38,7 +38,7 @@ jobs:
 - job: Foo
 
   steps:
-  - script: echo Hello!
+  - script: Write-Output Hello!
     condition: always() # this step will always run, even if the pipeline is canceled
 
 - job: Bar
@@ -127,7 +127,7 @@ parameters:
   doThing: false
 
 steps:
-- script: echo I did a thing
+- script: Write-Output I did a thing
   condition: and(succeeded(), eq('${{ parameters.doThing }}', false))
 ```
 
@@ -140,14 +140,14 @@ jobs:
 - job: Foo
   steps:
     - script: |
-        echo "This is job Foo."
-        echo "##vso[task.setvariable variable=doThing;isOutput=true]Yes" #The variable doThing is set to true
+        Write-Output "This is job Foo."
+        Write-Output "##vso[task.setvariable variable=doThing;isOutput=true]Yes" #The variable doThing is set to true
       name: DetermineResult
 - job: Bar
   dependsOn: Foo
   condition: eq(dependencies.Foo.outputs['DetermineResult.doThing'], 'Yes') #map doThing and check if true
   steps:
-    - script: echo "Job Foo ran and doThing is true."
+    - script: Write-Output "Job Foo ran and doThing is true."
 ```
 
 ## Q & A

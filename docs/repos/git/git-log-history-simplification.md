@@ -59,7 +59,7 @@ First we create the file and add it to our repo:
 <pre style="color:white;background-color:black;font-family:Consolas,Courier,monospace;padding:10px">
     &gt; cd sample
     &gt; git init
-    &gt; echo "some content" &gt; test.txt
+    &gt; Write-Output "some content" &gt; test.txt
     &gt; git add test.txt
     &gt; git commit -m "Initial commit"
 </pre>
@@ -67,14 +67,14 @@ First we create the file and add it to our repo:
 Now we decide to append the text "donkeys" to the file in an animal branch:
 <pre style="color:white;background-color:black;font-family:Consolas,Courier,monospace;padding:10px">
     &gt; git checkout -b animals
-    &gt; echo "donkeys" &gt;&gt; test.txt
+    &gt; Write-Output "donkeys" &gt;&gt; test.txt
     &gt; git commit -am "We have added an animal"
 </pre>
     
 While we are experimenting, we decide maybe we want to go with fruit in our file instead, so we create a different branch and append the text "bananas" at the end of the file instead:
 <pre style="color:white;background-color:black;font-family:Consolas,Courier,monospace;padding:10px">
     &gt; git checkout master -b fruit
-    &gt; echo "bananas" &gt;&gt; test.txt
+    &gt; Write-Output "bananas" &gt;&gt; test.txt
     &gt; git commit -am "We have added a fruit"
 </pre>
     
@@ -112,8 +112,8 @@ So far so good, right? Nothing looks out of the ordinary in our log output. Now 
  
  Uh-oh, a merge conflict. After some consideration, we decide to _use the entire `test.txt` file_ from our fruit branch. Typically you would use some kind of text editor or merge tool, but we'll just recreate the entire file, since it's only two lines:
  <pre style="color:white;background-color:black;font-family:Consolas,Courier,monospace;padding:10px">
-    &gt; echo "some content" &gt; test.txt
-    &gt; echo "bananas" &gt;&gt; test.txt
+    &gt; Write-Output "some content" &gt; test.txt
+    &gt; Write-Output "bananas" &gt;&gt; test.txt
     &gt; git commit -am "Fixed merge conflict"
 </pre>
     

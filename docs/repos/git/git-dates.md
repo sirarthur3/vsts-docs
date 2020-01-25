@@ -30,7 +30,7 @@ Let's look at a brief example to see these concepts in practice. First we will c
 
 ```
 git init
-echo test > file.txt
+Write-Output test > file.txt
 git add *
 git commit -m "A normal commit message"
 ```
@@ -38,7 +38,7 @@ git commit -m "A normal commit message"
 Now let's amend our commit with a different message:
 
 ```
-echo again > file.txt
+Write-Output again > file.txt
 git add *
 git commit --amend -m "An amended commit"
 ```

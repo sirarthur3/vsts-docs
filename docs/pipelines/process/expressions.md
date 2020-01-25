@@ -169,7 +169,7 @@ variables:
   minor: $[counter(variables['major'], 100)]
 
 steps:
-    - bash: echo $(minor)
+    - bash: Write-Output $(minor)
 ```
 
 The value of `minor` in the above example in the first run of the pipeline will be 100. In the second run it will be 101, provided the value of `major` is still 1.
@@ -186,7 +186,7 @@ jobs:
   variables:
     a: $[counter(format('{0:yyyyMMdd}', pipeline.startTime), 100)]
   steps:
-    - bash: echo $(a)
+    - bash: Write-Output $(a)
 ``` 
 
 Here is an example of having a counter that maintains a separate value for PRs and CI runs.
@@ -375,14 +375,14 @@ For instance, in a YAML pipeline, you could check output variables:
 jobs:
 - job: A
   steps:
-  - script: echo "##vso[task.setvariable variable=skipsubsequent;isOutput=true]false"
+  - script: Write-Output "##vso[task.setvariable variable=skipsubsequent;isOutput=true]false"
     name: printvar
 
 - job: B
   condition: and(succeeded(), ne(dependencies.A.outputs['printvar.skipsubsequent'], 'true'))
   dependsOn: A
   steps:
-  - script: echo hello from B
+  - script: Write-Output hello from B
 ```
 
 Or you can check job status. In this example, Job A will always be skipped and Job B will run.
@@ -393,10 +393,10 @@ jobs:
 - job: a
   condition: false
   steps:
-  - script: echo Job A
+  - script: Write-Output Job A
 - job: b
   steps:
-  - script: echo Job B
+  - script: Write-Output Job B
 - job: c
   dependsOn:
   - a
@@ -504,19 +504,19 @@ trigger:
         - master
 steps:
 - bash: |
-    MAJOR_RUN=$(echo $BUILD_BUILDNUMBER | cut -d '.' -f1)
-    echo "This is the major run number: $MAJOR_RUN"
+    MAJOR_RUN=$(Write-Output $BUILD_BUILDNUMBER | cut -d '.' -f1)
+    Write-Output "This is the major run number: $MAJOR_RUN"
     
-    MINOR_RUN=$(echo $BUILD_BUILDNUMBER | cut -d '.' -f2)
-    echo "This is the major run number: $MINOR_RUN"
+    MINOR_RUN=$(Write-Output $BUILD_BUILDNUMBER | cut -d '.' -f2)
+    Write-Output "This is the major run number: $MINOR_RUN"
     
     # create pipeline variables
-    echo "##vso[task.setvariable variable=major]$MAJOR_RUN"
-    echo "##vso[task.setvariable variable=minor]$MINOR_RUN"
+    Write-Output "##vso[task.setvariable variable=major]$MAJOR_RUN"
+    Write-Output "##vso[task.setvariable variable=minor]$MINOR_RUN"
 
 - bash: |
-    echo My pipeline variable for major run is $MAJOR
-    echo My pipeline variable for minor run is $MINOR
+    Write-Output My pipeline variable for major run is $MAJOR
+    Write-Output My pipeline variable for minor run is $MINOR
 ```
 
 <!-- ENDSECTION -->
