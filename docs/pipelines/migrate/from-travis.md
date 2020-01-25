@@ -118,7 +118,7 @@ dependency installation step or execution inside a docker container:
 | `nix`         | `docker run -v $(pwd):/src -w /src nixos/nix nix-build`
 | `perl6`       | `sudo apt-get install rakudo`<br>`PERL6LIB=lib prove -v -r --exec=perl6 t/`
 | `rust`        | `sudo apt-get install rustc`<br>`cargo build --verbose`<br>`cargo test --verbose` |
-| `scala`       | <code>echo "deb https://dl.bintray.com/sbt/debian /" &#124; sudo tee -a /etc/apt/sources.list.d/sbt.list</code><br>`sudo apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv 2EE0EA64E40A89B84B2DF73499E82A75642AC823`<br>`sudo apt-get update`<br>`sudo apt-get install sbt`<br>`sbt ++2.11.6 test` |
+| `scala`       | <code>Write-Output "deb https://dl.bintray.com/sbt/debian /" &#124; sudo tee -a /etc/apt/sources.list.d/sbt.list</code><br>`sudo apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv 2EE0EA64E40A89B84B2DF73499E82A75642AC823`<br>`sudo apt-get update`<br>`sudo apt-get install sbt`<br>`sbt ++2.11.6 test` |
 | `smalltalk`   | `docker run -v $(pwd):/src -w /src hpiswa/smalltalkci smalltalkci` |
 
 ### Multiple language selection
@@ -311,7 +311,7 @@ env:
   - MY_ENVIRONMENT_VARIABLE: 'one'
   - MY_ENVIRONMENT_VARIABLE: 'two'
   - MY_ENVIRONMENT_VARIABLE: 'three'
-script: echo $MY_ENVIRONMENT_VARIABLE
+script: Write-Output $MY_ENVIRONMENT_VARIABLE
 ```
 
 **azure-pipelines.yml**
@@ -327,7 +327,7 @@ strategy:
     set_env_to_three:
       MY_ENVIRONMENT_VARIABLE: 'three'
 steps:
-- script: echo $(MY_ENVIRONMENT_VARIABLE)
+- script: Write-Output $(MY_ENVIRONMENT_VARIABLE)
 ```
 
 ### Example: Language versions in a matrix
@@ -390,7 +390,7 @@ matrix:
   - os: linux
   - os: windows
   - os: osx
-script: echo Hello, world!
+script: Write-Output Hello, world!
 ```
 
 **azure-pipelines.yml**
@@ -408,7 +408,7 @@ pool:
   vmImage: $(imageName)
 
 steps:
-- script: echo Hello, world!
+- script: Write-Output Hello, world!
 ```
 
 ## Success and failure handling
@@ -423,17 +423,17 @@ and powerful pipelines.
 **.travis.yml**
 ``` yaml
 build: ./build.sh
-after_success: echo Success 😀
-after_failure: echo Failed 🙁
+after_success: Write-Output Success 😀
+after_failure: Write-Output Failed 🙁
 ```
 
 **azure-pipelines.yml**
 ``` yaml
 steps:
 - script: ./build.sh
-- script: echo Success 😀
+- script: Write-Output Success 😀
   condition: succeeded()
-- script: echo Failed 🙁
+- script: Write-Output Failed 🙁
   condition: failed()
 ```
 

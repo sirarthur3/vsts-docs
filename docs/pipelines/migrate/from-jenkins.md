@@ -306,13 +306,13 @@ the `failure` section) or always (using the `always` section). For example:
 ```
 post {
     always {
-        echo "The build has finished"
+        Write-Output "The build has finished"
     }
     success {
-        echo "The build succeeded"
+        Write-Output "The build succeeded"
     }
     failure {
-        echo "The build failed"
+        Write-Output "The build failed"
     }
 }
 ```
@@ -330,17 +330,17 @@ that run based on the `always()`, `succeeded()` or `failed()` conditions:
 jobs:
 - job: always
   steps:
-  - script: echo "The build has finished"
+  - script: Write-Output "The build has finished"
     condition: always()
 
 - job: success
   steps:
-  - script: echo "The build succeeded"
+  - script: Write-Output "The build succeeded"
     condition: succeeded()
 
 - job: failed
   steps:
-  - script: echo "The build failed"
+  - script: Write-Output "The build failed"
     condition: failed()
 ```
 
